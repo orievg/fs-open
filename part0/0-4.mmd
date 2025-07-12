@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant browser
+    participant server
+    Note over browser: User enters a note "test_note" in the field and clicks on 'save'
+
+    browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note right of browser: The browser sends the note content as payload - note: "test_note"
+    Note over server: Server saves the received note into the array of {content: "note", date: "timestap"} objects
+    server-->>browser: Redirect response 302 Found (location: /exampleapp/notes)
+    deactivate server
+
+    browser->>server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: 200 OK, notes.html
+    deactivate server
+
+    browser->>server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: 200 OK,  main.css
+    deactivate server
+
+    browser->>server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: 200 OK, main.js
+    deactivate server
+
+    Note over browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: 200 OK, data.json
+    deactivate server
+
+
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "HTML is easy", "date": "2025-07-12" }, ... ]
+    deactivate server
+
+    Note over browser: Renders the content field of elements in the list as notes on the page

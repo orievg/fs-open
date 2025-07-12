@@ -1,0 +1,14 @@
+sequenceDiagram
+    participant browser
+    participant server
+    Note over browser: User enters a note "test_note" in the field and clicks on 'save'
+    Note over browser: the script saves the note with timestamp in the list locally
+    Note over browser: the script executes redrawNotes() and the note appears on the page
+    Note over browser: the script sends the note with timestamp over to sever as json object
+
+    browser->>server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note right of browser: The browser sends the note content as payload - note: "test_note"
+    Note over server: Server saves the received note into the array of {content: "note", date: "timestap"} objects
+    server-->>browser: 201 Created
+    deactivate server
